@@ -1,5 +1,13 @@
 <template>
-  <van-form ref="formRef">
+  <!-- 导航栏 -->
+  <van-nav-bar
+    title="基本信息"
+    left-text="返回"
+    left-arrow
+    @click-left="onClickLeft"
+  />
+  <!-- 表单 -->
+  <van-form ref="formRef" class="form-container">
     <van-field
       v-model="formData.userId"
       required
@@ -54,44 +62,63 @@
         </van-radio-group>
       </template>
     </van-field>
-    <van-button type="primary" block :loading="state.loading" @click="submit">
+    <van-button
+      type="primary"
+      block
+      :loading="state.loading"
+      style="margin-top: 20px"
+      @click="submit"
+    >
       提交
     </van-button>
   </van-form>
 </template>
 
 <script>
-import { reactive, computed, ref, nextTick, watch } from 'vue';
+import storage from 'store';
+import { reactive, computed, ref, nextTick, onMounted } from 'vue';
 import { omit, invert } from 'lodash-es';
-import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
 import { areaList } from '@vant/area-data';
-import { Toast } from 'vant';
+import { Toast, Notify } from 'vant';
 import { cloud } from '@/main';
 
 export default {
   name: 'SignIn',
   setup() {
-    const store = useStore();
+    const router = useRouter();
     const state = reactive({
       loading: false,
       showArea: false,
       areaCache: '',
     });
+
     const formData = reactive({
       userId: '',
       userName: '',
       isGraduate: '否',
-      addressProvince: '江西省',
-      addressCity: '南昌市',
+      addressProvince: '',
+      addressCity: '',
       addressInfo: '',
     });
 
-    // 设置用户信息
-    watch(
-      store.state.user,
-      user => Object.assign(formData, user),
-      { immediate: true },
-    );
+    // 初始化用户信息
+    onMounted(async () => {
+      const toast = Toast.loading();
+      try {
+        const uid = storage.get('uid');
+        const data = await cloud.run('getUserInfo', { userId: uid });
+        if (data.code !== 0) throw data;
+        Object.assign(formData, data.data);
+      } catch (e) {
+        console.error(e);
+        storage.remove('uid');
+        Notify({ message: e.msg || '用户信息获取失败', type: 'danger' });
+        router.replace('/init');
+      } finally {
+        toast.clear();
+      }
+    });
 
     const cityMap = invert(areaList.city_list);
     const areaRef = ref(); // 地区选择组件的引用
@@ -126,6 +153,7 @@ export default {
         const data = await cloud.run('setUserData', params);
         if (data.code !== 0) throw data;
         Toast.success('提交成功');
+        router.push('/');
       } catch (e) {
         Toast.fail(e.msg || '提交失败');
         console.error(e);
@@ -144,8 +172,14 @@ export default {
       areaRef,
       submit,
       formRef,
+      onClickLeft: () => router.replace('/'),
     };
   },
 };
 
 </script>
+
+<style lang="stylus" scoped>
+.form-container
+  padding 16px
+</style>

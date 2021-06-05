@@ -1,9 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { Toast } from 'vant';
 import storage from 'store';
-import store from '@/store';
 import Home from '@/views/Home.vue';
-import { cloud } from '@/main';
 
 const routes = [
   {
@@ -36,18 +34,6 @@ router.beforeEach(async (to, from, next) => {
     Toast('请先初始化');
     return next('/init');
   };
-
-  try {
-    const data = await cloud.run('getUserInfo', { userId: uid });
-    if (data.code !== 0) throw data;
-    store.commit('initUser', data.data);
-  } catch (e) {
-    console.error(e);
-    storage.clearAll();
-    Toast.fail(e.msg || '用户信息获取失败');
-    next('/init');
-    return;
-  }
 
   next();
 });

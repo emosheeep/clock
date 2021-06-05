@@ -1,5 +1,5 @@
 <template>
-  <van-dialog show title="电子ID" :beforeClose="beforeClose">
+  <van-dialog v-model:show="show" title="初始化" :beforeClose="beforeClose">
     <van-form ref="formRef">
       <van-field
         v-model="url"
@@ -14,7 +14,7 @@
 
 <script>
 import storage from 'store';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { Toast } from 'vant';
 import { cloud } from '@/main';
@@ -24,8 +24,11 @@ export default {
   setup() {
     const router = useRouter();
     const url = ref('');
+    const show = ref(false);
     const formRef = ref();
     let code;
+
+    onMounted(() => { show.value = true; });
 
     function urlValidator(value) {
       if (!value) return '请粘贴电子ID地址';
@@ -63,6 +66,7 @@ export default {
     }
 
     return {
+      show,
       url,
       formRef,
       beforeClose,

@@ -6,6 +6,7 @@ import store from './store';
 import Vant from 'vant';
 import 'vant/lib/index.css';
 import '@vant/touch-emulator';
+import '@/reset.styl';
 
 const app = createApp(App).use(store).use(router);
 app.use(Vant).mount('#app');
