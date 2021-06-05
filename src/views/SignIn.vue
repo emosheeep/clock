@@ -75,13 +75,13 @@
 </template>
 
 <script>
-import storage from 'store';
-import { reactive, computed, ref, nextTick, onMounted } from 'vue';
+import { reactive, computed, ref, nextTick } from 'vue';
 import { omit, invert } from 'lodash-es';
 import { useRouter } from 'vue-router';
 import { areaList } from '@vant/area-data';
-import { Toast, Notify } from 'vant';
+import { Toast } from 'vant';
 import { cloud } from '@/main';
+import { useUserInfo } from '@/hooks/useUserInfo';
 
 export default {
   name: 'SignIn',
@@ -93,31 +93,13 @@ export default {
       areaCache: '',
     });
 
-    const formData = reactive({
+    const formData = useUserInfo({
       userId: '',
       userName: '',
       isGraduate: '否',
       addressProvince: '',
       addressCity: '',
       addressInfo: '',
-    });
-
-    // 初始化用户信息
-    onMounted(async () => {
-      const toast = Toast.loading();
-      try {
-        const uid = storage.get('uid');
-        const data = await cloud.run('getUserInfo', { userId: uid });
-        if (data.code !== 0) throw data;
-        Object.assign(formData, data.data);
-      } catch (e) {
-        console.error(e);
-        storage.remove('uid');
-        Notify({ message: e.msg || '用户信息获取失败', type: 'danger' });
-        router.replace('/init');
-      } finally {
-        toast.clear();
-      }
     });
 
     const cityMap = invert(areaList.city_list);
