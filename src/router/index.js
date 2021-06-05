@@ -12,9 +12,14 @@ const routes = [
     component: Home,
   },
   {
+    path: '/form',
+    name: 'Form',
+    component: () => import('@/views/SignIn.vue'),
+  },
+  {
     path: '/init',
-    name: 'init',
-    component: () => import('@/views/Init.vue'),
+    name: 'Init',
+    component: () => import('@/views/InitUserInfo.vue'),
   },
 ];
 
@@ -23,10 +28,10 @@ const router = createRouter({
   routes,
 });
 
-const whiteList = ['init'];
+const whiteList = ['/init'];
 router.beforeEach(async (to, from, next) => {
-  const uid = storage.get('uid') || '8002117359';
-  if (whiteList.includes(to.name)) return next();
+  const uid = storage.get('uid');
+  if (whiteList.includes(to.path)) return next();
   if (!uid) {
     Toast('请先初始化');
     return next('/init');
@@ -37,8 +42,11 @@ router.beforeEach(async (to, from, next) => {
     if (data.code !== 0) throw data;
     store.commit('initUser', data.data);
   } catch (e) {
-    Toast.fail(e.msg || '用户信息获取失败');
     console.error(e);
+    storage.clearAll();
+    Toast.fail(e.msg || '用户信息获取失败');
+    next('/init');
+    return;
   }
 
   next();
