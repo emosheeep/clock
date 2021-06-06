@@ -22,7 +22,7 @@
     </van-cell>
   </van-cell-group>
   <van-cell-group title="其他">
-    <van-cell title="清除本地缓存" is-link @click="resetCurrentUser" />
+    <van-cell title="切换用户" is-link @click="resetCurrentUser" />
   </van-cell-group>
 </template>
 
@@ -45,8 +45,8 @@ export default {
     async function resetCurrentUser() {
       try {
         await Dialog.confirm({
-          title: '确认清除？',
-          message: '清除后需重新初始化',
+          title: '确认切换？',
+          message: '需重新初始化',
         });
         storage.remove('uid');
         router.push('/init');

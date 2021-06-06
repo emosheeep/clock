@@ -12,7 +12,7 @@ const routes = [
   {
     path: '/form',
     name: 'Form',
-    component: () => import('@/views/SignIn.vue'),
+    component: () => import('@/views/SignForm.vue'),
   },
   {
     path: '/init',

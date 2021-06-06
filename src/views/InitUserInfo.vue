@@ -4,9 +4,10 @@
       <van-field
         v-model="url"
         required
-        label="电子ID地址"
         placeholder="请粘贴电子ID地址"
+        right-icon="question-o"
         :rules="[{ validator: urlValidator }]"
+        @click-right-icon="clickRightIcon"
       />
     </van-form>
   </van-dialog>
@@ -16,7 +17,7 @@
 import storage from 'store';
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { Toast } from 'vant';
+import { Toast, Dialog } from 'vant';
 import { cloud } from '@/main';
 
 export default {
@@ -58,11 +59,19 @@ export default {
           throw data;
         }
         storage.set('uid', data.data.userId);
-        router.replace('/');
+        router.replace('/form');
       } catch (e) {
         Toast.fail(e.msg || '初始化失败');
         console.error(e);
       }
+    }
+
+    function clickRightIcon() {
+      Dialog.alert({
+        title: '初始化方法',
+        messageAlign: 'left',
+        message: '在南昌大学企业微信中打开电子ID界面，复制并在输入框中粘贴页面地址。若初始化失败，可尝试退出并重新进入电子ID界面。示例：http://jc.ncu.edu.cn/?code=xxx',
+      });
     }
 
     return {
@@ -71,6 +80,7 @@ export default {
       formRef,
       beforeClose,
       urlValidator,
+      clickRightIcon,
     };
   },
 };

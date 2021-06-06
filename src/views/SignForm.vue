@@ -84,7 +84,7 @@ import { cloud } from '@/main';
 import { useUserInfo } from '@/hooks/useUserInfo';
 
 export default {
-  name: 'SignIn',
+  name: 'SignForm',
   setup() {
     const router = useRouter();
     const state = reactive({
