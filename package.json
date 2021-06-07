@@ -12,6 +12,7 @@
     "@vant/area-data": "^1.1.1",
     "@vant/touch-emulator": "^1.3.0",
     "core-js": "^3.6.5",
+    "is-email": "^1.0.1",
     "lodash-es": "^4.17.21",
     "store": "^2.0.12",
     "vant": "^3.0.18",

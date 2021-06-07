@@ -5521,6 +5521,11 @@
   "resolved" "https://registry.npmjs.org/is-docker/-/is-docker-2.2.1.tgz"
   "version" "2.2.1"
 
+"is-email@^1.0.1":
+  "integrity" "sha1-b5jAq2oOOTbcTafyqzNPf667qlY="
+  "resolved" "https://registry.nlark.com/is-email/download/is-email-1.0.1.tgz"
+  "version" "1.0.1"
+
 "is-extendable@^0.1.0", "is-extendable@^0.1.1":
   "integrity" "sha1-YrEQ4omkcUGOPsNqYX1HLjAd/Ik="
   "resolved" "https://registry.npmjs.org/is-extendable/-/is-extendable-0.1.1.tgz"

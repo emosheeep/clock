@@ -12,7 +12,6 @@
       v-model="formData.userId"
       required
       disabled
-      name="学号"
       label="学号"
       placeholder="学号"
       :rules="[{ required: true, message: '请填写学号' }]"
@@ -30,7 +29,6 @@
       required
       readonly
       clickable
-      name="area"
       label="地区选择"
       placeholder="点击选择省市"
       @click="toggleAreaShow"
@@ -48,13 +46,12 @@
     <van-field
       v-model="formData.addressInfo"
       required
-      name="addressInfo"
       label="详细地址"
       placeholder="详细地址"
       :rules="[{ required: true, message: '请填写详细地址' }]"
     />
     <!-- 是否毕业生 -->
-    <van-field name="isGraduate" label="是否毕业生">
+    <van-field label="是否毕业生">
       <template #input>
         <van-radio-group v-model="formData.isGraduate" direction="horizontal">
           <van-radio name="是">是</van-radio>
@@ -62,6 +59,13 @@
         </van-radio-group>
       </template>
     </van-field>
+    <!-- 邮箱填写 -->
+    <van-field
+      v-model="formData.email"
+      label="邮箱"
+      placeholder="用于接收打卡状态通知"
+      :rules="[{ validator: emailValidator }]"
+    />
     <van-button
       type="primary"
       block
@@ -82,6 +86,7 @@ import { areaList } from '@vant/area-data';
 import { Toast } from 'vant';
 import { cloud } from '@/main';
 import { useUserInfo } from '@/hooks/useUserInfo';
+import isEmail from 'is-email';
 
 export default {
   name: 'SignForm',
@@ -100,6 +105,7 @@ export default {
       addressProvince: '',
       addressCity: '',
       addressInfo: '',
+      email: '',
     });
 
     const cityMap = invert(areaList.city_list);
@@ -125,6 +131,7 @@ export default {
     }
 
     const formRef = ref();
+    const emailValidator = value => value && (isEmail(value) || '请填写正确的邮箱地址');
     async function submit() {
       try {
         await formRef.value.validate();
@@ -153,6 +160,7 @@ export default {
       toggleAreaShow,
       areaRef,
       submit,
+      emailValidator,
       formRef,
       onClickLeft: () => router.replace('/'),
     };
