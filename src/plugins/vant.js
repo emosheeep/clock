@@ -13,6 +13,7 @@ import {
   Radio,
   RadioGroup,
   Button,
+  Switch,
 } from 'vant';
 
 const components = [
@@ -29,6 +30,7 @@ const components = [
   Radio,
   RadioGroup,
   Button,
+  Switch,
 ];
 
 export default function(app) {

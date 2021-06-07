@@ -59,28 +59,57 @@
         </van-radio-group>
       </template>
     </van-field>
-    <!-- 邮箱填写 -->
-    <van-field
-      v-model="formData.email"
-      label="邮箱"
-      placeholder="用于接收打卡状态通知"
-      :rules="[{ validator: emailValidator }]"
-    />
+    <!-- 通知设置 -->
+    <van-cell-group title="通知设置">
+      <van-field label="接收通知">
+        <template #input>
+          <van-switch v-model="formData.message.status" size="20" />
+        </template>
+      </van-field>
+      <!-- 邮箱填写 -->
+      <template v-if="formData.message.status">
+        <van-field label="通知类型">
+          <template #input>
+            <van-radio-group
+              v-model="formData.message.type"
+              direction="horizontal"
+            >
+              <van-radio name="always">总是通知</van-radio>
+              <van-radio name="fail">仅接收失败通知</van-radio>
+            </van-radio-group>
+          </template>
+        </van-field>
+        <van-field
+          v-model="formData.message.email"
+          required
+          label="邮箱"
+          placeholder="用于接收打卡状态通知"
+          :rules="[{ validator: emailValidator }]"
+        />
+      </template>
+    </van-cell-group>
+
     <van-button
       type="primary"
       block
       :loading="state.loading"
-      style="margin-top: 20px"
+      style="margin: 20px 0"
       @click="submit"
     >
-      提交
+      保存
     </van-button>
+
+    <span style="font-size: 12px">
+      说明：上述表单只填写了部分必要信息，其余信息均自动应用了合理的默认值。
+      首次填写信息将会自动打卡一次，之后系统将于每天早上8:00自动打卡，并以邮件的方式通知打卡结果。
+      建议填写邮箱以接收通知，若未收到，请查看是否被拦截。为避免打扰，默认只在打卡失败时进行通知。
+    </span>
   </van-form>
 </template>
 
 <script>
 import { reactive, computed, ref, nextTick } from 'vue';
-import { omit, invert } from 'lodash-es';
+import { invert } from 'lodash-es';
 import { useRouter } from 'vue-router';
 import { areaList } from '@vant/area-data';
 import { Toast } from 'vant';
@@ -105,7 +134,11 @@ export default {
       addressProvince: '',
       addressCity: '',
       addressInfo: '',
-      email: '',
+      message: {
+        status: true,
+        email: '',
+        type: 'fail',
+      },
     });
 
     const cityMap = invert(areaList.city_list);
@@ -131,15 +164,14 @@ export default {
     }
 
     const formRef = ref();
-    const emailValidator = value => value && (isEmail(value) || '请填写正确的邮箱地址');
+    const emailValidator = value => isEmail(value) || '请填写正确的邮箱地址';
     async function submit() {
       try {
         await formRef.value.validate();
       } catch (e) { return; }
       try {
         state.loading = true;
-        const params = omit(formData, ['userName']);
-        const data = await cloud.run('setUserData', params);
+        const data = await cloud.run('setUserData', formData);
         if (data.code !== 0) throw data;
         Toast.success('提交成功');
         router.push('/');
@@ -154,14 +186,14 @@ export default {
     return {
       state,
       formData,
-      areaList,
-      confirmAreaSelect,
-      addressStr,
-      toggleAreaShow,
       areaRef,
+      formRef,
+      areaList,
+      addressStr,
+      confirmAreaSelect,
+      toggleAreaShow,
       submit,
       emailValidator,
-      formRef,
       onClickLeft: () => router.replace('/'),
     };
   },
@@ -172,4 +204,6 @@ export default {
 <style lang="stylus" scoped>
 .form-container
   padding 16px
+  :deep(.van-cell-group__title)
+    padding-left 0
 </style>

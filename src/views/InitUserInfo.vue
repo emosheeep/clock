@@ -70,7 +70,7 @@ export default {
       Dialog.alert({
         title: '初始化方法',
         messageAlign: 'left',
-        message: '在南昌大学企业微信中打开电子ID界面，复制并在输入框中粘贴页面地址。若初始化失败，可尝试退出并重新进入电子ID界面。示例：http://jc.ncu.edu.cn/?code=xxx',
+        message: '在南昌大学企业微信中打开电子ID界面，复制并在输入框中粘贴页面地址。初始化一次可使用5天左右，若初始化失败，可尝试退出并重新进入电子ID界面。示例：http://jc.ncu.edu.cn/?code=xxx。',
       });
     }
 

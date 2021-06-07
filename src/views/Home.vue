@@ -53,6 +53,9 @@ export default {
       } catch (e) {}
     }
     async function signIn() {
+      if (user.status?.type === 'success') {
+        return Toast('今日已打卡');
+      }
       if (loading.value) return;
       loading.value = true;
       const status = { message: '', type: 'success' };
