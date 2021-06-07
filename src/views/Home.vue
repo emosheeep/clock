@@ -1,5 +1,7 @@
 <template>
-  <van-nav-bar title="打卡助手" />
+  <van-sticky>
+    <van-nav-bar title="打卡助手" />
+  </van-sticky>
   <van-cell-group title="基本信息">
     <van-cell
       center

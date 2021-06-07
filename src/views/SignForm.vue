@@ -1,13 +1,15 @@
 <template>
   <!-- 导航栏 -->
-  <van-nav-bar
-    title="基本信息"
-    left-text="返回"
-    left-arrow
-    @click-left="onClickLeft"
-  />
+  <van-sticky>
+    <van-nav-bar
+      title="基本信息"
+      left-text="返回"
+      left-arrow
+      @click-left="onClickLeft"
+    />
+  </van-sticky>
   <!-- 表单 -->
-  <van-form ref="formRef" class="form-container">
+  <van-form ref="formRef" class="form-container" label-width="60px">
     <van-field
       v-model="formData.userId"
       required
@@ -51,9 +53,13 @@
       :rules="[{ required: true, message: '请填写详细地址' }]"
     />
     <!-- 是否毕业生 -->
-    <van-field label="是否毕业生">
+    <van-field label="毕业生">
       <template #input>
-        <van-radio-group v-model="formData.isGraduate" direction="horizontal">
+        <van-radio-group
+          v-model="formData.isGraduate"
+          direction="horizontal"
+          icon-size="16px"
+        >
           <van-radio name="是">是</van-radio>
           <van-radio name="否">否</van-radio>
         </van-radio-group>
@@ -63,7 +69,7 @@
     <van-cell-group title="通知设置">
       <van-field label="接收通知">
         <template #input>
-          <van-switch v-model="formData.message.status" size="20" />
+          <van-switch v-model="formData.message.status" size="14px" />
         </template>
       </van-field>
       <!-- 邮箱填写 -->
@@ -73,9 +79,10 @@
             <van-radio-group
               v-model="formData.message.type"
               direction="horizontal"
+              icon-size="16px"
             >
               <van-radio name="always">总是通知</van-radio>
-              <van-radio name="fail">仅接收失败通知</van-radio>
+              <van-radio name="fail">失败时通知</van-radio>
             </van-radio-group>
           </template>
         </van-field>
@@ -206,4 +213,7 @@ export default {
   padding 16px
   :deep(.van-cell-group__title)
     padding-left 0
+  :deep(.van-radio-group)
+    white-space nowrap
+    flex-wrap nowrap
 </style>
