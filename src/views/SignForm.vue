@@ -5,7 +5,7 @@
       title="基本信息"
       left-text="返回"
       left-arrow
-      @click-left="onClickLeft"
+      @click-left="$router.replace('/')"
     />
   </van-sticky>
   <!-- 表单 -->
@@ -201,7 +201,6 @@ export default {
       toggleAreaShow,
       submit,
       emailValidator,
-      onClickLeft: () => router.replace('/'),
     };
   },
 };

@@ -27,15 +27,13 @@ const router = createRouter({
 });
 
 const whiteList = ['/init'];
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(to => {
   const uid = storage.get('uid');
-  if (whiteList.includes(to.path)) return next();
+  if (whiteList.includes(to.path)) return;
   if (!uid) {
     Toast('请先初始化');
-    return next('/init');
+    return '/init';
   };
-
-  next();
 });
 
 export default router;

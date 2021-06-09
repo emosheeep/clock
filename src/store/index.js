@@ -9,11 +9,7 @@ if (process.env.NODE_ENV === 'development') {
 export default createStore({
   plugins,
   state: {
-    user: null,
   },
   mutations: {
-    initUser(state, user) {
-      state.user = user;
-    },
   },
 });
