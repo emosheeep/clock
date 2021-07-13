@@ -10,63 +10,65 @@
   </van-sticky>
   <!-- 表单 -->
   <van-form ref="formRef" class="form-container" label-width="60px">
-    <van-field
-      v-model="formData.userId"
-      required
-      disabled
-      label="学号"
-      placeholder="学号"
-      :rules="[{ required: true, message: '请填写学号' }]"
-    />
-    <van-field
-      v-model="formData.userName"
-      required
-      disabled
-      label="姓名"
-      placeholder="姓名"
-    />
-    <!-- 地区选择 -->
-    <van-field
-      v-model="addressStr"
-      required
-      readonly
-      clickable
-      label="地区选择"
-      placeholder="点击选择省市"
-      @click="toggleAreaShow"
-    />
-    <van-popup v-model:show="state.showArea" position="bottom">
-      <van-area
-        ref="areaRef"
-        :area-list="areaList"
-        :columns-num="2"
-        @cancel="toggleAreaShow"
-        @confirm="confirmAreaSelect"
+    <van-cell-group inset>
+      <van-field
+        v-model="formData.userId"
+        required
+        disabled
+        label="学号"
+        placeholder="学号"
+        :rules="[{ required: true, message: '请填写学号' }]"
       />
-    </van-popup>
-    <!-- 详细地址 -->
-    <van-field
-      v-model="formData.addressInfo"
-      required
-      label="详细地址"
-      placeholder="详细地址"
-      :rules="[{ required: true, message: '请填写详细地址' }]"
-    />
-    <!-- 是否毕业生 -->
-    <van-field label="毕业生">
-      <template #input>
-        <van-radio-group
-          v-model="formData.isGraduate"
-          direction="horizontal"
-          icon-size="16px"
-        >
-          <van-radio name="是">是</van-radio>
-          <van-radio name="否">否</van-radio>
-        </van-radio-group>
-      </template>
-    </van-field>
+      <van-field
+        v-model="formData.userName"
+        required
+        disabled
+        label="姓名"
+        placeholder="姓名"
+      />
+      <!-- 地区选择 -->
+      <van-field
+        v-model="addressStr"
+        required
+        readonly
+        clickable
+        label="地区选择"
+        placeholder="点击选择省市"
+        @click="toggleAreaShow"
+      />
+      <van-popup v-model:show="state.showArea" position="bottom">
+        <van-area
+          ref="areaRef"
+          :area-list="areaList"
+          :columns-num="2"
+          @cancel="toggleAreaShow"
+          @confirm="confirmAreaSelect"
+        />
+      </van-popup>
+      <!-- 详细地址 -->
+      <van-field
+        v-model="formData.addressInfo"
+        required
+        label="详细地址"
+        placeholder="详细地址"
+        :rules="[{ required: true, message: '请填写详细地址' }]"
+      />
+      <!-- 是否毕业生 -->
+      <van-field label="毕业生">
+        <template #input>
+          <van-radio-group
+            v-model="formData.isGraduate"
+            direction="horizontal"
+            icon-size="16px"
+          >
+            <van-radio name="是">是</van-radio>
+            <van-radio name="否">否</van-radio>
+          </van-radio-group>
+        </template>
+      </van-field>
+    </van-cell-group>
     <!-- 通知设置 -->
-    <van-cell-group title="通知设置">
+    <van-cell-group title="通知设置" inset>
       <van-field label="接收通知">
         <template #input>
           <van-switch v-model="formData.message.status" size="14px" />
@@ -99,6 +101,7 @@
     <van-button
       type="primary"
       block
+      round
       :loading="state.loading"
       style="margin: 20px 0"
       @click="submit"
@@ -210,8 +213,11 @@ export default {
 <style lang="stylus" scoped>
 .form-container
   padding 16px
-  :deep(.van-cell-group__title)
-    padding-left 0
+  :deep(.van-cell-group)
+    &--inset
+      margin 0
+    &__title--inset
+      padding-left 16px
   :deep(.van-radio-group)
     white-space nowrap
     flex-wrap nowrap

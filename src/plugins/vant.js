@@ -15,6 +15,8 @@ import {
   Button,
   Switch,
   Sticky,
+  Swipe,
+  SwipeItem,
 } from 'vant';
 
 const components = [
@@ -33,6 +35,8 @@ const components = [
   Button,
   Switch,
   Sticky,
+  Swipe,
+  SwipeItem,
 ];
 
 export default function(app) {

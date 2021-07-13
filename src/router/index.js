@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router';
 import { Toast } from 'vant';
 import storage from 'store';
 import Home from '@/views/Home.vue';
+import NProgress from 'nprogress';
+import 'nprogress/nprogress.css';
 
 const routes = [
   {
@@ -19,6 +21,11 @@ const routes = [
     name: 'Init',
     component: () => import('@/views/InitUserInfo.vue'),
   },
+  {
+    path: '/offer',
+    name: 'Offer',
+    component: () => import('@/views/Offer.vue'),
+  },
 ];
 
 const router = createRouter({
@@ -26,14 +33,19 @@ const router = createRouter({
   routes,
 });
 
-const whiteList = ['/init'];
+const whiteList = ['/init', '/offer'];
 router.beforeEach(to => {
+  NProgress.start();
   const uid = storage.get('uid');
   if (whiteList.includes(to.path)) return;
   if (!uid) {
     Toast('请先初始化');
     return '/init';
   };
+});
+
+router.afterEach(() => {
+  NProgress.done();
 });
 
 export default router;
