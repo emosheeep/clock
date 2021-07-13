@@ -45,7 +45,7 @@ const code = 'J4U91EU';
 export default {
   setup() {
     const swiper = ref();
-    const images = [1, 2, 3, 4, 5].map(n => `/offer${n}.png`);
+    const images = [1, 2, 3, 4, 5].map(n => `/images/offer/${n}.png`);
     function preview() {
       ImagePreview({
         images,
