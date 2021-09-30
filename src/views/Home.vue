@@ -38,6 +38,17 @@
       to="/offer"
     />
   </van-cell-group>
+
+  <van-cell-group inset title="项目地址">
+    <van-cell
+      title="前端地址"
+      value="欢迎star⭐️"
+      center
+      is-link
+      label="https://github.com/1446445040/clock"
+      @click="jumpToProject"
+    />
+  </van-cell-group>
 </template>
 
 <script>
@@ -95,6 +106,7 @@ export default {
       signIn,
       loading,
       ...toRefs(user),
+      jumpToProject: () => window.open('https://github.com/1446445040/clock', '_blank'),
     };
   },
 };
